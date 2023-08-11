@@ -60,12 +60,7 @@ export default class CaitlynnCore implements IExtension {
     }
 
     private async startMain(executionContext: IAppExecutionContext): Promise<void> {
-        const caitlynn = new CaitlynnBuilder()
-            .setIncomingChannel(new TcpServerChannel({host: "127.0.0.1", port: 1234}))
-            .setOutgoingChannel(new TcpClientChannel({host: "78.46.41.219", port: 2233}))
-            .done();
 
-        await caitlynn.start();
     }
 
     private checkConfig(): void {
