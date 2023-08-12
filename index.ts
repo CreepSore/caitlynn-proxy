@@ -4,16 +4,6 @@ import IExecutionContext, { IAppExecutionContext, ICliExecutionContext } from "@
 import IExtension, { ExtensionMetadata } from "@service/extensions/IExtension";
 import ConfigLoader from "@logic/config/ConfigLoader";
 import Core from "@extensions/Core";
-import CaitlynnBuilder from "./logic/CaitlynnBuilder";
-import TcpServerChannel from "./logic/channels/TcpServerChannel";
-import EchoChannel from "./logic/channels/EchoChannel";
-import PacketConstructorProcessor from "./logic/data-processors/PacketConstructorProcessor";
-import LogBuilder from "@service/logger/LogBuilder";
-import NewlinePacketProcessor from "./logic/data-processors/NewlinePacketProcessor";
-import LoggerProcessor from "./logic/data-processors/LoggerProcessor";
-import CustomProcessor from "./logic/data-processors/CustomProcessor";
-import StringPreprocessor from "./logic/data-processors/StringPreprocessor";
-import TcpClientChannel from "./logic/channels/TcpClientChannel";
 
 class CaitlynnCoreConfig {
 

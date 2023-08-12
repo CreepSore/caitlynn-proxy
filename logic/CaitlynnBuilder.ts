@@ -15,12 +15,12 @@ export default class CaitlynnBuilder<
     private _incomingCustomLogic: (packet: InIncomingProcessorType) => InIncomingProcessorType;
     private _outgoingCustomLogic: (packet: InOutgoingProcessorType) => InOutgoingProcessorType;
 
-    setIncomingChannel(channel: IDataChannel): this {
+    incomingChannel(channel: IDataChannel): this {
         this._incomingChannel = channel;
         return this;
     }
 
-    setOutgoingChannel(channel: IDataChannel): this {
+    outgoingChannel(channel: IDataChannel): this {
         this._outgoingChannel = channel;
         return this;
     }
@@ -29,7 +29,7 @@ export default class CaitlynnBuilder<
      * Incoming:
      * [client] -> [proxy] -> [server]
      */
-    addIncomingLayer<T, T2>(layer: IDataProcessor<T, T2>): CaitlynnBuilder<T, T2, OutIncomingProcessorType, OutOutgoingProcessorType> {
+    incomingLayer<T, T2>(layer: IDataProcessor<T, T2>): CaitlynnBuilder<T, T2, OutIncomingProcessorType, OutOutgoingProcessorType> {
         this._incomingProcessingLayers.push(layer);
         return this as unknown as CaitlynnBuilder<T, T2, OutIncomingProcessorType, OutOutgoingProcessorType>;
     }
@@ -38,17 +38,17 @@ export default class CaitlynnBuilder<
      * Outgoing:
      * [client] <- [proxy] <- [server]
      */
-    addOutgoingLayer<T, T2>(layer: IDataProcessor<T, T2>): CaitlynnBuilder<InIncomingProcessorType, InOutgoingProcessorType, T, T2> {
+    outgoingLayer<T, T2>(layer: IDataProcessor<T, T2>): CaitlynnBuilder<InIncomingProcessorType, InOutgoingProcessorType, T, T2> {
         this._outgoingProcessingLayers.push(layer);
         return this as unknown as CaitlynnBuilder<InIncomingProcessorType, InOutgoingProcessorType, T, T2>;
     }
 
-    setIncomingCustomLogic(callback: (packet: InIncomingProcessorType) => InIncomingProcessorType): this {
+    incomingLogic(callback: (packet: InIncomingProcessorType) => InIncomingProcessorType): this {
         this._incomingCustomLogic = callback;
         return this;
     }
 
-    setOutgoingCustomLogic(callback: (packet: InOutgoingProcessorType) => InOutgoingProcessorType): this {
+    outgoingLogic(callback: (packet: InOutgoingProcessorType) => InOutgoingProcessorType): this {
         this._outgoingCustomLogic = callback;
         return this;
     }

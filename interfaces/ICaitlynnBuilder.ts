@@ -6,14 +6,14 @@ export default interface ICaitlynnBuilder<
     InIncomingProcessorType = any, InOutgoingProcessorType = any,
     OutIncomingProcessorType = Buffer, OutOutgoingProcessorType = Buffer
 > {
-    setIncomingChannel(channel: IDataChannel): this;
-    setOutgoingChannel(channel: IDataChannel): this;
+    incomingChannel(channel: IDataChannel): this;
+    outgoingChannel(channel: IDataChannel): this;
 
-    addIncomingLayer<T, T2>(layer: IDataProcessor<T, T2>): ICaitlynnBuilder<T, T2, OutIncomingProcessorType, OutOutgoingProcessorType>;
-    addOutgoingLayer<T, T2>(layer: IDataProcessor<T, T2>): ICaitlynnBuilder<InIncomingProcessorType, InOutgoingProcessorType, T, T2>;
+    incomingLayer<T, T2>(layer: IDataProcessor<T, T2>): ICaitlynnBuilder<T, T2, OutIncomingProcessorType, OutOutgoingProcessorType>;
+    outgoingLayer<T, T2>(layer: IDataProcessor<T, T2>): ICaitlynnBuilder<InIncomingProcessorType, InOutgoingProcessorType, T, T2>;
 
-    setIncomingCustomLogic(callback: (packet: InIncomingProcessorType) => InIncomingProcessorType): this;
-    setOutgoingCustomLogic(callback: (packet: InOutgoingProcessorType) => InOutgoingProcessorType): this;
+    incomingLogic(callback: (packet: InIncomingProcessorType) => InIncomingProcessorType): this;
+    outgoingLogic(callback: (packet: InOutgoingProcessorType) => InOutgoingProcessorType): this;
 
     done(): ICaitlynn;
 }
