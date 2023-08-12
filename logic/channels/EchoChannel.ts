@@ -3,11 +3,20 @@ import IDataChannel from "@extensions/Caitlynn.Core/interfaces/IDataChannel";
 import LogBuilder from "@service/logger/LogBuilder";
 
 export default class EchoChannel implements IDataChannel {
+    private _name: string = "EchoChannel";
     private _emitter: EventEmitter = new EventEmitter();
     private _isEstablished: boolean = false;
 
+    get name(): string {
+        return this._name;
+    }
+
     get isEstablished(): boolean {
         return this._isEstablished;
+    }
+
+    constructor(name: string = null) {
+        this._name = name || this._name;
     }
 
     start(): Promise<void> {
@@ -28,7 +37,7 @@ export default class EchoChannel implements IDataChannel {
         LogBuilder
             .start()
             .level("INFO")
-            .info("EchoChannel")
+            .info(`Caitlynn.${this.name}`)
             .line(`Data Transfer: ${data.toString("utf-8")}`)
             .done();
 

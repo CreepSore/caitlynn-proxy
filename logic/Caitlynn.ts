@@ -67,7 +67,7 @@ export default class Caitlynn implements ICaitlynn {
             .start()
             .level("INFO")
             .info("Caitlynn")
-            .line("Incoming Channel started")
+            .line("Caitlynn startup successful.")
             .done();
     }
 
@@ -118,22 +118,8 @@ export default class Caitlynn implements ICaitlynn {
         await this.onConnectionStateChanged(channel, direction);
 
         if(this._incomingChannel.isEstablished && !this._outgoingChannel.isEstablished) {
-            LogBuilder
-                .start()
-                .level("INFO")
-                .info("Caitlynn")
-                .line("Starting outgoing channel ...")
-                .done();
-
             await this._outgoingChannel.start();
         }
-
-        LogBuilder
-            .start()
-            .level("INFO")
-            .info("Caitlynn")
-            .line(`${direction === "in" ? "Incoming" : "Outgoing"} Channel connection established`)
-            .done();
     }
 
     private async onConnectionClosed(channel: IDataChannel, direction: "in"|"out"): Promise<void> {

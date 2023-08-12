@@ -1,5 +1,6 @@
 export default interface IDataChannel {
     get isEstablished(): boolean;
+    get name(): string;
 
     start(): Promise<void>;
     stop(): Promise<void>;
