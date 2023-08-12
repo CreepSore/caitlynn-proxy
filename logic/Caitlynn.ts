@@ -85,6 +85,7 @@ export default class Caitlynn implements ICaitlynn {
     private async onDataReceived(channel: IDataChannel, direction: "in"|"out", data: Buffer): Promise<void> {
         const target = direction === "in" ? this._outgoingChannel : this._incomingChannel;
         const layers = direction === "in" ? this._incomingProcessingLayers : this._outgoingProcessingLayers;
+        const reverseLayers = [...layers].reverse();
         const customLogic = direction === "in" ? this._incomingCustomLogic : this._outgoingCustomLogic;
 
         let currentData: any = [data];
@@ -104,7 +105,7 @@ export default class Caitlynn implements ICaitlynn {
         }
         currentData = processedData.filter(Boolean);
 
-        for(const layer of layers) {
+        for(const layer of reverseLayers) {
             currentData = await layer.levelDown(currentData);
             if(!currentData) return;
         }

@@ -2,7 +2,7 @@ import IDataProcessor from "@extensions/Caitlynn.Core/interfaces/IDataProcessor"
 
 export default class PacketRegistryProcessor<T> implements IDataProcessor<T, T> {
     private _packetTypeConverter: (packet: T) => string;
-    savedPackets: {type: string, data: T}[] = [];
+    savedPackets: {type: string, data: T, timestamp: number}[] = [];
 
     constructor(packetTypeConverter: (packet: T) => string) {
         this._packetTypeConverter = packetTypeConverter;
@@ -10,7 +10,11 @@ export default class PacketRegistryProcessor<T> implements IDataProcessor<T, T> 
 
     async levelUp(dataPackets: T[]): Promise<T[]> {
         for(const packet of dataPackets) {
-            this.savedPackets.push({type: this._packetTypeConverter(packet), data: packet});
+            this.savedPackets.push({
+                type: this._packetTypeConverter(packet),
+                data: packet,
+                timestamp: Date.now(),
+            });
         }
 
         return dataPackets;
