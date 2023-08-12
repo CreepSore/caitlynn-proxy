@@ -3,8 +3,8 @@ import * as dgram from "dgram";
 import IDataChannel from "@extensions/Caitlynn.Core/interfaces/IDataChannel";
 import LogBuilder from "@service/logger/LogBuilder";
 
-export default class UdpClientChannel implements IDataChannel {
-    private _name: string = "UdpClientChannel";
+export default class UdpServerChannel implements IDataChannel {
+    private _name: string = "UdpServerChannel";
     private _emitter: EventEmitter = new EventEmitter();
     private _isEstablished: boolean = false;
     private _socket: dgram.Socket;
@@ -30,6 +30,19 @@ export default class UdpClientChannel implements IDataChannel {
 
         this._socket.on("message", (data, rinfo) => {
             this._connectedSocket = rinfo;
+
+            if(!this._isEstablished) {
+                this._isEstablished = true;
+                this._emitter.emit("connection-established");
+
+                LogBuilder
+                    .start()
+                    .level("INFO")
+                    .info(`Caitlynn.${this.name}`)
+                    .line("Connection established.")
+                    .done();
+            }
+
             this._emitter.emit("data-received", data);
         });
 
@@ -47,18 +60,6 @@ export default class UdpClientChannel implements IDataChannel {
         });
 
         this._socket.bind(this._options.port, this._options.host);
-
-        if(!this._isEstablished) {
-            this._isEstablished = true;
-            this._emitter.emit("connection-established");
-
-            LogBuilder
-                .start()
-                .level("INFO")
-                .info(`Caitlynn.${this.name}`)
-                .line("Connection established.")
-                .done();
-        }
 
         return Promise.resolve();
     }

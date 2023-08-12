@@ -2,6 +2,7 @@ import ICaitlynn from "../interfaces/ICaitlynn";
 import ICaitlynnBuilder from "../interfaces/ICaitlynnBuilder";
 import IDataChannel from "../interfaces/IDataChannel";
 import IDataProcessor from "../interfaces/IDataProcessor";
+import ICaitlynnManager from "../interfaces/ICaitlynnManager";
 import Caitlynn from "./Caitlynn";
 
 export default class CaitlynnBuilder<
@@ -14,6 +15,7 @@ export default class CaitlynnBuilder<
     private _outgoingProcessingLayers: IDataProcessor<any, any>[] = [];
     private _incomingCustomLogic: (packet: InIncomingProcessorType) => InIncomingProcessorType;
     private _outgoingCustomLogic: (packet: InOutgoingProcessorType) => InOutgoingProcessorType;
+    private _managers: ICaitlynnManager[] = [];
 
     incomingChannel(channel: IDataChannel): this {
         this._incomingChannel = channel;
@@ -53,6 +55,11 @@ export default class CaitlynnBuilder<
         return this;
     }
 
+    manager(manager: ICaitlynnManager): this {
+        this._managers.push(manager);
+        return this;
+    }
+
     done(): ICaitlynn {
         return new Caitlynn({
             incomingChannel: this._incomingChannel,
@@ -63,6 +70,6 @@ export default class CaitlynnBuilder<
         }, {
             incoming: this._incomingCustomLogic,
             outgoing: this._outgoingCustomLogic,
-        });
+        }, this._managers);
     }
 }

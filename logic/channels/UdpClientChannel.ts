@@ -3,8 +3,8 @@ import * as dgram from "dgram";
 import IDataChannel from "@extensions/Caitlynn.Core/interfaces/IDataChannel";
 import LogBuilder from "@service/logger/LogBuilder";
 
-export default class UdpServerChannel implements IDataChannel {
-    private _name: string = "TcpServerChannel";
+export default class UdpClientChannel implements IDataChannel {
+    private _name: string = "UdpClientChannel";
     private _emitter: EventEmitter = new EventEmitter();
     private _isEstablished: boolean = false;
     private _isStarted: boolean = false;
