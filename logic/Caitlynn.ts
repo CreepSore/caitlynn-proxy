@@ -14,6 +14,7 @@ export default class Caitlynn implements ICaitlynn {
     private _incomingCustomLogic: (packet: any) => any;
     private _outgoingCustomLogic: (packet: any) => any;
     private _managers: ICaitlynnManager[] = [];
+    private _waitForStopPromises: {promiseObj: Promise<void>, resolve: Function, reject: Function}[] = [];
 
     get isRunning(): boolean {
         return this._isRunning;
@@ -93,6 +94,9 @@ export default class Caitlynn implements ICaitlynn {
         // TODO: Nicer error handling
         await this._incomingChannel.stop().catch(() => {});
         await this._outgoingChannel.stop().catch(() => {});
+        for(const waitPromise of this._waitForStopPromises) {
+            waitPromise.resolve();
+        }
     }
 
     async reset(): Promise<void> {
@@ -202,5 +206,15 @@ export default class Caitlynn implements ICaitlynn {
 
     private async onConnectionStateChanged(channel: IDataChannel, direction: "in"|"out"): Promise<void> {
         this._isReady = this._incomingChannel.isEstablished && this._outgoingChannel.isEstablished;
+    }
+
+    private waitForExit(): Promise<void> {
+        const promise: Promise<void> = new Promise((res, rej) => (this._waitForStopPromises.push({
+            promiseObj: promise,
+            resolve: res,
+            reject: rej,
+        })));
+
+        return promise;
     }
 }
